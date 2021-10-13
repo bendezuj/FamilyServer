@@ -1,0 +1,46 @@
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Person;
+DROP TABLE IF EXISTS Event;
+DROP TABLE IF EXISTS AuthToken;
+
+CREATE TABLE EVENT(
+    eventId VARCHAR(255) NOT NULL PRIMARY KEY ,
+    associatedUsername VARCHAR(255) NOT NULL,
+    personId VARCHAR(255) NOT NULL,
+    latitude FLOAT(9) NOT NULL,
+    longitude FLOAT(9) NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    eventType VARCHAR(255) NOT NULL,
+    year INTEGER NOT NULL,
+    FOREIGN KEY (personID) References Person(personID)
+)
+
+CREATE TABLE PERSON(
+    personID VARCHAR(255) NOT NULL PRIMARY KEY,
+    associatedUsername VARCHAR(255) NOT NULL,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    gender VARCHAR(1) NOT NULL,
+    fatherID VARCHAR(255),
+    motherID VARCHAR(255),
+    spouseID VARCHAR(255),
+    FOREIGN KEY (associatedUsername) REFERENCES User(username)
+)
+
+CREATE TABLE USER(
+    username VARCHAR(255) NOT NULL PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    gender VARCHAR(1),
+    personID VARCHAR(255) NOT NULL,
+    FOREIGN KEY (personID) REFERENCES Person(tableID)
+)
+
+CREATE TABLE AuthToken (
+    authTokenId VARCHAR(255) NOT NULL PRIMARY KEY,
+    associatedUsername VARCHAR(255) NOT NULL,
+    FOREIGN KEY (associatedUsername) REFERENCES User (username)
+);
